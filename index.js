@@ -4,9 +4,17 @@ var io = require('socket.io')(app);
 var fs = require('fs');
 var url = require('url');
 
+var FORWARD = 16
+var BACK = 15
+var LEFT = 18
+var RIGHT = 22
+
 app.listen(8000);
 
-rp.open(16, rp.OUTPUT,rp.HIGH);
+rp.open(FORWARD, rp.OUTPUT,rp.LOW);
+rp.open(BACK, rp.OUTPUT,rp.LOW);
+rp.open(LEFT, rp.OUTPUT,rp.LOW);
+rp.open(RIGHT, rp.OUTPUT,rp.LOW);
 /*
 while(true)
 {
@@ -16,13 +24,26 @@ while(true)
 	rp.msleep(500);
 }
 */
-off(rp);
+off(rp, FORWARD);
+
 
 io.on('connection', socket => {
 	console.log('got connection');
-
-	socket.on('ON', () => on(rp));
-	socket.on('OFF', () => off(rp));
+	
+	socket.on('OFF', () => {
+		off(rp, FORWARD);
+		off(rp, BACK);
+		off(rp, LEFT);
+		off(rp, RIGHT);
+	});
+	
+	socket.on('FORWARD', () => on(rp, FORWARD));
+	socket.on('BACK', () => {
+		console.log('yep');
+		on(rp, BACK)
+	});
+	socket.on('LEFT', () => on(rp, LEFT));
+	socket.on('RIGHT', () => on(rp, RIGHT));
 });
 
 
@@ -45,12 +66,12 @@ function handler (req, res) {
 }
 
 
-function on(rp)
+function on(rp, pin)
 {
-	rp.write(16, rp.HIGH);
+	rp.write(pin, rp.HIGH);
 }
 
-function off(rp)
+function off(rp, pin)
 {
-	rp.write(16, rp.LOW);
+	rp.write(pin, rp.LOW);
 }

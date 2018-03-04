@@ -3,21 +3,25 @@
   <head>
     <meta charset="utf-8">
     <title>Heroic Journey!</title>
+	<script src="/socket.io.js"></script>  
+  <script>
+      //var io = require('socket.io-client');
+
+var socket = io('http://192.168.1.111:8000');
+
+function emit(socket, direction) {
+	console.log(direction)
+	socket.emit(direction)
+}
+    </script>
   </head>
   <body>
     <div>Hello world!</div>
-    <script src="/socket.io.js"></script>
-    <script>
-      // Charlie!!! Do the code here!!
-      // - Move the socket IO code from controller.js into this block
-      // - Add buttons to go forward/backwards/left/right
-      // - wire those up to send socket IO messages to the raspberry pi
-
-      // var socket = io('http://localhost');
-      // socket.on('news', function (data) {
-      //   console.log(data);
-      //   socket.emit('my other event', { my: 'data' });
-      // });
-    </script>
+    
+    <INPUT TYPE="button" value="Forward" onmousedown="emit(socket, 'FORWARD')" onmouseup="emit(socket, 'OFF')" onmouseout="emit(socket, 'OFF')">
+    <INPUT TYPE="button" value="Back" onmousedown="emit(socket, 'BACK')" onmouseup="emit(socket, 'OFF')" onmouseout="emit(socket, 'OFF')">
+    <INPUT TYPE="button" value="Left" onmousedown="emit(socket, 'LEFT')" onmouseup="emit(socket, 'OFF')" onmouseout="emit(socket, 'OFF')">
+    <INPUT TYPE="button" value="Right" onmousedown="emit(socket, 'RIGHT')" onmouseup="emit(socket, 'OFF')" onmouseout="emit(socket, 'OFF')">
+    <INPUT TYPE="button" value="OFF" onmousedown="emit(socket, 'OFF')">
   </body>
 </html>

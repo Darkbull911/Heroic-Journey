@@ -4,37 +4,25 @@ const io = require('socket.io')(app);
 const fs = require('fs');
 const url = require('url');
 
-const FRONT_LEFT_POS = 11;
-const FRONT_LEFT_NEG = 13;
-const FRONT_RIGHT_POS = 12;
-const FRONT_RIGHT_NEG = 16;
-const BACK_LEFT_POS = 19;
-const BACK_LEFT_NEG = 21;
-const BACK_RIGHT_POS = 22;
-const BACK_RIGHT_NEG = 24;
+const LEFT_POS = 11;
+const LEFT_NEG = 13;
+const RIGHT_POS = 29;
+const RIGHT_NEG = 31;
 
-const FRONT_LEFT = [FRONT_LEFT_POS, FRONT_LEFT_NEG];
-const FRONT_RIGHT = [FRONT_RIGHT_POS, FRONT_RIGHT_NEG];
-const BACK_LEFT = [BACK_LEFT_POS, BACK_LEFT_NEG];
-const BACK_RIGHT = [BACK_RIGHT_POS, BACK_RIGHT_NEG];
 
 const ALL_PINS = [
-	...FRONT_LEFT,
-	...FRONT_RIGHT,
-	...BACK_LEFT,
-	...BACK_RIGHT
+	LEFT_POS,
+	LEFT_NEG,
+	RIGHT_POS,
+	RIGHT_NEG,
 ];
 const ALL_POS = [
-	FRONT_LEFT[0],
-	FRONT_RIGHT[0],
-	BACK_LEFT[0],
-	BACK_RIGHT[0]
+	LEFT_POS,
+	RIGHT_POS,
 ];
 const ALL_NEG = [
-	FRONT_LEFT[1],
-	FRONT_RIGHT[1],
-	BACK_LEFT[1],
-	BACK_RIGHT[1]
+	LEFT_NEG,
+	RIGHT_NEG,
 ];
 
 const initPin = pin => rp.open(pin, rp.OUTPUT, rp.LOW);
@@ -65,18 +53,14 @@ const goBackwards = () => {
 
 const goLeft = () => {
 	allOff();
-	pinOn(FRONT_LEFT_NEG);
-	pinOn(FRONT_RIGHT_POS);
-	pinOn(BACK_LEFT_NEG);
-	pinOn(BACK_RIGHT_POS);
+	pinOn(LEFT_NEG);
+	pinOn(RIGHT_POS);
 };
 
 const goRight = () => {
 	allOff();
-	pinOn(FRONT_LEFT_POS);
-	pinOn(FRONT_RIGHT_NEG);
-	pinOn(BACK_LEFT_POS);
-	pinOn(BACK_RIGHT_NEG);
+	pinOn(RIGHT_NEG);
+	pinOn(LEFT_POS);
 };
 
 app.listen(8000);
